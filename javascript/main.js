@@ -1,6 +1,11 @@
 const startGame = () => {
   game = new Game();
   game.gameLoop();
+
+  splashScreenDOM.style.display = "none";
+  gameoverScreenDOM.style.display = "none";
+  canvas.style.display = "block";
+
 };
 
 const handleCharacterMove = event => {
@@ -13,6 +18,6 @@ const handleCharacterMove = event => {
   }
 };
 
-window.addEventListener("load", startGame);
+startBtnDOM.addEventListener("click", startGame);
 
 window.addEventListener("keydown", handleCharacterMove);

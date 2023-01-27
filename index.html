@@ -1,21 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Riff Lord Doomskulls Catcher</title>
-    <link rel="stylesheet" href="./styles/style.css">
-</head>
-<body>
+    <link rel="stylesheet" href="./styles/style.css" />
+  </head>
+  <body>
+    <div class="background container">
+      <div id="splash-screen" class="container screen">
+        <h1>SPLASH</h1>
+        <button id="start-btn">Start!</button>
+      </div>
 
-    <canvas id="game-canvas" width="600" height="800"></canvas>
+      <canvas
+        id="game-canvas"
+        width="600"
+        height="800"
+      ></canvas>
+
+      <div id="gameover-screen" class="container screen">
+        <h1>GAMEOVER</h1>
+        <button id="restart-btn">Play Again!</button>
+      </div>
+    </div>
+
     <script src="./javascript/globals.js"></script>
     <script src="./javascript/main.js"></script>
     <script src="./javascript/classes/game.js"></script>
     <script src="./javascript/classes/character.js"></script>
     <script src="./javascript/classes/wall.js"></script>
     <script src="./javascript/classes/item.js"></script>
-    
-</body>
+  </body>
 </html>
