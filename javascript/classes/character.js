@@ -4,7 +4,7 @@ class Character {
     this.y = positionY;
     this.w = characterW;
     this.h = characterH;
-    this.speed = 20;
+    this.speed = 40;
   }
 
   drawCharacter = () => {

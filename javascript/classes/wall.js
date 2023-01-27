@@ -4,7 +4,7 @@ class Wall {
     this.y = positionY;
     this.w = 600;
     this.h = 30;
-    this.speed = 1;
+    this.speed = 4; 
   }
 
   drawWall = () => {
@@ -16,3 +16,4 @@ class Wall {
     this.y += this.speed;
   }
 }
+
