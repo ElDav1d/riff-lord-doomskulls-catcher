@@ -1,16 +1,26 @@
 class Character {
-  constructor() {
-    this.x = 0;
-    this.y = 0;
-    this.w = 50;
-    this.h = 50;
-    this.speed = 10;
+  constructor(positionX, positionY, charaterW, characterH) {
+    this.x = positionX;
+    this.y = positionY;
+    this.w = charaterW;
+    this.h = characterH;
+    this.speed = 20;
   }
 
   drawCharacter = () => {
-    const centerXPosition = (canvas.width / 2)  - (this.w / 2);
-    const yPosition = canvas.height - (this.h * 2)
     context.fillStyle = "white";
-    context.fillRect(centerXPosition, yPosition, this.w, this.h);    
+    context.fillRect(this.x, this.y, this.w, this.h);
+  };
+
+  moveLeft = () => {
+    if (this.x > 0) {
+      this.x -= this.speed;
+    }
+  };
+
+  moveRigth = () => {
+    if (this.x + this.w < canvas.width) {
+      this.x += this.speed;
+    }
   };
 }

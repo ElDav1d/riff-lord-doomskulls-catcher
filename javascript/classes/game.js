@@ -1,17 +1,9 @@
 class Game {
   constructor() {
-    this.tony = new Character();
+    this.character = new Character(initXPosition, yPosition, characterW, characterH);
     this.frames = 1;
     this.isGameOn = true;
   }
- 
-  getStartPosition = () => {
-    const centerXPosition = (canvas.width / 2)  - (this.w/2);
-
-    this.tony.x = centerXPosition
-    this.tony.y = canvas.width - this.tony.h
-  }
-
 
   gameLoop = () => {
     // control
@@ -23,8 +15,7 @@ class Game {
     // animation and actions
 
     // drawing
-    this.tony.drawCharacter();
-    this.getStartPosition()
+    this.character.drawCharacter();
 
     // recursion
     if (this.isGameOn) {
