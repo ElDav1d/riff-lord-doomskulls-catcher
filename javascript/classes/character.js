@@ -1,8 +1,8 @@
 class Character {
-  constructor(positionX, positionY, charaterW, characterH) {
+  constructor(positionX, positionY, characterW, characterH) {
     this.x = positionX;
     this.y = positionY;
-    this.w = charaterW;
+    this.w = characterW;
     this.h = characterH;
     this.speed = 20;
   }
