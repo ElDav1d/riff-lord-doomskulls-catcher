@@ -7,8 +7,11 @@ class Game {
       characterH
     );
     this.wallArray = [];
+    this.wallGenerationFactor = 60;
     this.wallGapFactor = 350;
     this.wallGapVariance = 1.5;
+    this.wallSpeed = 4
+
     this.item = new Item(canvas.width / 2, 0, 20, 20, 5);
     this.frames = 1;
     this.isGameOn = true;
@@ -28,10 +31,10 @@ class Game {
   
 
   createWalls = () => {
-    const passed1sec = this.frames % 60 === 0;
+    const isFramesPerSec = this.frames % this.wallGenerationFactor === 0;
 
-    if (this.wallArray.length === 0 || passed1sec) {
-      const wall = new Wall(this.randomizeWallGap(), 30);
+    if (this.wallArray.length === 0 || isFramesPerSec) {
+      const wall = new Wall(this.randomizeWallGap(), 30, this.wallSpeed);
       this.wallArray.push(wall);
     }
   };

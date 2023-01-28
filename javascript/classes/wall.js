@@ -1,10 +1,10 @@
 class Wall {
-  constructor(positionX, positionY) {
+  constructor(positionX, positionY, speed = 4) {
     this.x = positionX;
     this.y = positionY;
     this.w = 600;
     this.h = 30;
-    this.speed = 4; 
+    this.speed = speed;
   }
 
   drawWall = () => {
