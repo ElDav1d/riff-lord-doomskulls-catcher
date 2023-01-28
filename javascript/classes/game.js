@@ -6,6 +6,7 @@ class Game {
       characterW,
       characterH
     );
+
     this.wallArray = [];
     this.wallGenerationFactor = 60;
     this.wallGapFactor = 350;
@@ -39,6 +40,12 @@ class Game {
     }
   };
 
+  cleanStack = array => {
+    if (array[0].y + array[0].h > canvas.height) {
+      array.shift();
+    }
+  }
+
   gameLoop = () => {
     // control
     this.frames++;
@@ -54,11 +61,14 @@ class Game {
 
     // drawing
     this.character.drawCharacter();
-    this.createWalls();
+    this.item.drawItem();
     this.wallArray.forEach(wall => {
       wall.drawWall();
     });
-    this.item.drawItem();
+
+    //spawning
+    this.createWalls();
+    this.cleanStack(this.wallArray);
 
     // recursion
     if (this.isGameOn) {
