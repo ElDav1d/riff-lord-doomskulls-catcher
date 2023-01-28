@@ -20,6 +20,7 @@ class Game {
 
     this.frames = 1;
     this.isGameOn = true;
+    this.score = 0;
   }
 
   randomizeWallGap = () => {
@@ -87,8 +88,11 @@ class Game {
   };
 
   handleItemCollision = () => {
-    this.itemArray.forEach(element => {
-      if (this.hasCollision(element)) console.log("skull");
+    this.itemArray.forEach((element, index) => {
+      if (this.hasCollision(element)) {
+        this.itemArray.splice(index, 1);
+        this.score += 1;
+      }
     });
   };
 
