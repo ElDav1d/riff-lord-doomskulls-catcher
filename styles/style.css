@@ -9,7 +9,20 @@ button {
 
 #game-canvas {
   background-color: black;
+}
+
+#game-screen {
   display: none;
+  position: relative;
+}
+
+#game-score {
+  color: white;
+  font-size: 2rem;
+  text-align: right;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
 }
 
 #splash-screen {
@@ -26,7 +39,7 @@ button {
   height: 100vh;
 }
 
-.container {
+.container-flex {
   display: flex;
   flex-direction: column;
   justify-content: center;

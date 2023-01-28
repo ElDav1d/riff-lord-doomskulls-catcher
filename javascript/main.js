@@ -4,14 +4,13 @@ const startGame = () => {
 
   splashScreenDOM.style.display = "none";
   gameoverScreenDOM.style.display = "none";
-  canvas.style.display = "block";
-
+  gameScreenDOM.style.display = "block";
 };
 
 const restartGame = () => {
   gameoverScreenDOM.style.display = "none";
   startGame();
-}
+};
 
 const handleCharacterMove = event => {
   if (event.code === "ArrowLeft") {

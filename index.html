@@ -8,19 +8,17 @@
     <link rel="stylesheet" href="./styles/style.css" />
   </head>
   <body>
-    <div class="background container">
-      <div id="splash-screen" class="container screen">
+    <div class="background container-flex">
+      <div id="splash-screen" class="container-flex screen">
         <h1>SPLASH</h1>
         <button id="start-btn">Start!</button>
       </div>
+      <div id="game-screen">
+        <canvas id="game-canvas" width="600" height="800"></canvas>
+        <span id="game-score">0</span>
+      </div>
 
-      <canvas
-        id="game-canvas"
-        width="600"
-        height="800"
-      ></canvas>
-
-      <div id="gameover-screen" class="container screen">
+      <div id="gameover-screen" class="container-flex screen">
         <h1>GAMEOVER</h1>
         <button id="restart-btn">Play Again!</button>
       </div>

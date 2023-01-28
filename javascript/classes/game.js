@@ -1,5 +1,9 @@
 class Game {
   constructor() {
+    this.frames = 1;
+    this.isGameOn = true;
+    this.score = 0;
+
     this.character = new Character(
       initXPosition,
       yPosition,
@@ -17,10 +21,6 @@ class Game {
     this.itemSize = 30;
     this.itemSpeed = 5;
     this.itemGenerationFactor = 60;
-
-    this.frames = 1;
-    this.isGameOn = true;
-    this.score = 0;
   }
 
   randomizeWallGap = () => {
@@ -102,11 +102,15 @@ class Game {
     });
   };
 
+  displayScore = () => {
+    gameScoreDOM.innerText = this.score;
+  };
+
   gameOver = () => {
     this.isGameOn = false;
 
     setTimeout(() => {
-      canvas.style.display = "none";
+      gameScreenDOM.style.display = "none";
 
       gameoverScreenDOM.style.display = "flex";
     }, 1000);
@@ -120,6 +124,8 @@ class Game {
     context.clearRect(0, 0, canvas.width, canvas.height);
 
     // animation and actions
+    this.displayScore();
+
     this.wallArray.forEach(wall => {
       wall.moveWall();
     });
@@ -132,6 +138,7 @@ class Game {
     this.handleItemCollision();
 
     // drawing
+
     this.character.drawCharacter();
     this.wallArray.forEach(wall => {
       wall.drawWall();
