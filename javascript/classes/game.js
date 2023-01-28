@@ -20,6 +20,10 @@ class Game {
     this.skullArray = [];
     this.skullSpeed = 5;
     this.skullGenerationFactor = 60;
+
+    this.leafArray = [];
+    this.leafSpeed = 3;
+    this.leafGenerationFactor = 180;
   }
 
   randomizeWallGap = () => {
@@ -34,7 +38,7 @@ class Game {
     }
   };
 
-  createWalls = () => {
+  createWall = () => {
     const isFramesPerSec = this.frames % this.wallGenerationFactor === 0;
 
     if (this.wallArray.length === 0 || isFramesPerSec) {
@@ -70,6 +74,18 @@ class Game {
     }
   };
 
+  createLeaf = () => {
+    const isFramesPerSec = this.frames % this.skullGenerationFactor === 0;
+
+    if (this.leafArray.length === 0 || isFramesPerSec) {
+      const leaf = new Leaf(0, 0, this.leafSpeed);
+
+      leaf.x = this.randomizeXPosition(leaf.w);
+
+      this.leafArray.push(leaf);
+    }
+  };
+
   cleanStack = stack => {
     if (stack[0].y + stack[0].h > canvas.height) {
       stack.shift();
@@ -90,6 +106,15 @@ class Game {
       if (this.hasCollision(skull)) {
         this.skullArray.splice(index, 1);
         this.score += 1;
+      }
+    });
+  };
+
+  handleLeafCollision = () => {
+    this.leafArray.forEach((leaf, index) => {
+      if (this.hasCollision(leaf)) {
+        this.leafArray.splice(index, 1);
+        console.log("HITS LEAF");
       }
     });
   };
@@ -132,8 +157,13 @@ class Game {
       skull.moveItem();
     });
 
+    this.leafArray.forEach(leaf => {
+      leaf.moveItem();
+    });
+
     this.handleWallCollision();
     this.handleSkullCollision();
+    this.handleLeafCollision();
 
     // drawing
 
@@ -147,11 +177,17 @@ class Game {
       skull.drawSkull();
     });
 
+    this.leafArray.forEach(leaf => {
+      leaf.drawLeaf();
+    });
+
     //spawning
-    this.createWalls();
+    this.createWall();
     this.createSkull();
+    this.createLeaf();
     this.cleanStack(this.wallArray);
     this.cleanStack(this.skullArray);
+    this.cleanStack(this.leafArray);
 
     // recursion
     if (this.isGameOn) {
