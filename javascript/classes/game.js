@@ -18,7 +18,6 @@ class Game {
     this.wallSpeed = 4;
 
     this.skullArray = [];
-    this.skullSize = 30;
     this.skullSpeed = 5;
     this.skullGenerationFactor = 60;
   }
@@ -39,7 +38,10 @@ class Game {
     const isFramesPerSec = this.frames % this.wallGenerationFactor === 0;
 
     if (this.wallArray.length === 0 || isFramesPerSec) {
-      const wall = new Wall(this.randomizeWallGap(), 0, this.wallSpeed);
+      const wall = new Wall(0, 0, this.wallSpeed);
+
+      wall.x = this.randomizeWallGap();
+
       this.wallArray.push(wall);
     }
   };
@@ -60,15 +62,11 @@ class Game {
     const isFramesPerSec = this.frames % this.skullGenerationFactor === 0;
 
     if (this.skullArray.length === 0 || isFramesPerSec) {
-      const item = new Item(
-        this.randomizeXPosition(this.skullSize),
-        0,
-        this.skullSize,
-        this.skullSize,
-        this.skullSpeed
-      );
+      const skull = new Skull(0, 0, this.skullSpeed);
 
-      this.skullArray.push(item);
+      skull.x = this.randomizeXPosition(skull.w);
+
+      this.skullArray.push(skull);
     }
   };
 
@@ -87,9 +85,9 @@ class Game {
     );
   };
 
-  handleItemCollision = () => {
-    this.skullArray.forEach((element, index) => {
-      if (this.hasCollision(element)) {
+  handleSkullCollision = () => {
+    this.skullArray.forEach((skull, index) => {
+      if (this.hasCollision(skull)) {
         this.skullArray.splice(index, 1);
         this.score += 1;
       }
@@ -127,24 +125,26 @@ class Game {
     this.displayScore();
 
     this.wallArray.forEach(wall => {
-      wall.moveWall();
+      wall.moveItem();
     });
 
-    this.skullArray.forEach(item => {
-      item.moveItem();
+    this.skullArray.forEach(skull => {
+      skull.moveItem();
     });
 
     this.handleWallCollision();
-    this.handleItemCollision();
+    this.handleSkullCollision();
 
     // drawing
 
     this.character.drawCharacter();
+
     this.wallArray.forEach(wall => {
       wall.drawWall();
     });
-    this.skullArray.forEach(item => {
-      item.drawItem();
+
+    this.skullArray.forEach(skull => {
+      skull.drawSkull();
     });
 
     //spawning

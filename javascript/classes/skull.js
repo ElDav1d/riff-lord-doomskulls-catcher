@@ -1,11 +1,12 @@
-class Skull extends Item {
-  constructor(x, y, w, h, speed, color) {
-    super(x, y, w, h, speed);
-    this.color = color;
+class Skull extends FallingItem {
+  constructor(x, y, speed) {
+    super(x, y, speed);
+    this.w = 30;
+    this.h = 30;
   }
 
-  drawItem = () => {
-    context.fillStyle = this.color;
+  drawSkull = () => {
+    context.fillStyle = "red";
     context.fillRect(this.x, this.y, this.w, this.h);
   };
 }
