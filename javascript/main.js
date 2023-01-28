@@ -8,6 +8,11 @@ const startGame = () => {
 
 };
 
+const restartGame = () => {
+  gameoverScreenDOM.style.display = "none";
+  startGame();
+}
+
 const handleCharacterMove = event => {
   if (event.code === "ArrowLeft") {
     game.character.moveLeft();
@@ -19,5 +24,6 @@ const handleCharacterMove = event => {
 };
 
 startBtnDOM.addEventListener("click", startGame);
+restartBtnDOM.addEventListener("click", restartGame);
 
 window.addEventListener("keydown", handleCharacterMove);

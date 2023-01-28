@@ -5,6 +5,7 @@ const splashScreenDOM = document.querySelector("#splash-screen");
 const gameoverScreenDOM = document.querySelector("#gameover-screen");
 
 const startBtnDOM = document.querySelector("#start-btn");
+const restartBtnDOM = document.querySelector("#restart-btn");
 
 const context = canvas.getContext("2d");
 

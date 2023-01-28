@@ -85,8 +85,19 @@ class Game {
         element.y < this.character.y + this.character.h &&
         element.h + element.y > this.character.y
       ) {
+        this.gameOver()
       }
     });
+  };
+
+  gameOver = () => {
+    this.isGameOn = false;
+
+    setTimeout(() => {
+      canvas.style.display = "none";
+
+      gameoverScreenDOM.style.display = "flex";
+    }, 1000);
   };
 
   gameLoop = () => {
