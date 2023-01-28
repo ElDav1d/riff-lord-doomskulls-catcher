@@ -86,13 +86,13 @@ class Game {
     );
   };
 
-  checkItemCollision = () => {
+  handleItemCollision = () => {
     this.itemArray.forEach(element => {
       if (this.hasCollision(element)) console.log("skull");
     });
   };
 
-  checkWallCollision = () => {
+  handleWallCollision = () => {
     this.wallArray.forEach(element => {
       if (this.hasCollision(element)) this.gameOver();
     });
@@ -124,8 +124,8 @@ class Game {
       item.moveItem();
     });
 
-    this.checkWallCollision(this.wallArray);
-    this.checkItemCollision(this.itemArray);
+    this.handleWallCollision();
+    this.handleItemCollision();
 
     // drawing
     this.character.drawCharacter();
