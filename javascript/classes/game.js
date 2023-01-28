@@ -17,10 +17,10 @@ class Game {
     this.wallGapVariance = 1.5;
     this.wallSpeed = 4;
 
-    this.itemArray = [];
-    this.itemSize = 30;
-    this.itemSpeed = 5;
-    this.itemGenerationFactor = 60;
+    this.skullArray = [];
+    this.skullSize = 30;
+    this.skullSpeed = 5;
+    this.skullGenerationFactor = 60;
   }
 
   randomizeWallGap = () => {
@@ -56,19 +56,19 @@ class Game {
     return randomXPosition;
   };
 
-  createItems = () => {
-    const isFramesPerSec = this.frames % this.itemGenerationFactor === 0;
+  createSkull = () => {
+    const isFramesPerSec = this.frames % this.skullGenerationFactor === 0;
 
-    if (this.itemArray.length === 0 || isFramesPerSec) {
+    if (this.skullArray.length === 0 || isFramesPerSec) {
       const item = new Item(
-        this.randomizeXPosition(this.itemSize),
+        this.randomizeXPosition(this.skullSize),
         0,
-        this.itemSize,
-        this.itemSize,
-        this.itemSpeed
+        this.skullSize,
+        this.skullSize,
+        this.skullSpeed
       );
 
-      this.itemArray.push(item);
+      this.skullArray.push(item);
     }
   };
 
@@ -88,9 +88,9 @@ class Game {
   };
 
   handleItemCollision = () => {
-    this.itemArray.forEach((element, index) => {
+    this.skullArray.forEach((element, index) => {
       if (this.hasCollision(element)) {
-        this.itemArray.splice(index, 1);
+        this.skullArray.splice(index, 1);
         this.score += 1;
       }
     });
@@ -130,7 +130,7 @@ class Game {
       wall.moveWall();
     });
 
-    this.itemArray.forEach(item => {
+    this.skullArray.forEach(item => {
       item.moveItem();
     });
 
@@ -143,15 +143,15 @@ class Game {
     this.wallArray.forEach(wall => {
       wall.drawWall();
     });
-    this.itemArray.forEach(item => {
+    this.skullArray.forEach(item => {
       item.drawItem();
     });
 
     //spawning
     this.createWalls();
-    this.createItems();
+    this.createSkull();
     this.cleanStack(this.wallArray);
-    this.cleanStack(this.itemArray);
+    this.cleanStack(this.skullArray);
 
     // recursion
     if (this.isGameOn) {
