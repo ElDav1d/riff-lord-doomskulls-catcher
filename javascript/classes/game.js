@@ -40,11 +40,24 @@ class Game {
     }
   };
 
-  cleanStack = array => {
-    if (array[0].y + array[0].h > canvas.height) {
-      array.shift();
+  cleanStack = stack => {
+    if (stack[0].y + stack[0].h > canvas.height) {
+      stack.shift();
     }
   }
+
+  checkCollision = stack => {
+    stack.forEach(element => {
+      if (
+        element.x < this.character.x + this.character.w &&
+        element.x + element.w > this.character.x &&
+        element.y < this.character.y + this.character.h &&
+        element.h + element.y > this.character.y
+      ) {
+        console.log(`Collision with ${element}`);
+      }
+    })
+  } 
 
   gameLoop = () => {
     // control
@@ -58,6 +71,7 @@ class Game {
       wall.moveWall();
     });
     this.item.moveItem();
+    this.checkCollision(this.wallArray)
 
     // drawing
     this.character.drawCharacter();
