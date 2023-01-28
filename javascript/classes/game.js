@@ -28,7 +28,7 @@ class Game {
       Math.round(Math.random() * 100 + 1) * this.wallGapVariance;
 
     if (isLeftStarting) {
-      return - this.wallGapFactor - randomVariance;
+      return -this.wallGapFactor - randomVariance;
     } else {
       return this.wallGapFactor + randomVariance;
     }
@@ -77,16 +77,24 @@ class Game {
     }
   };
 
-  checkCollision = stack => {
-    stack.forEach(element => {
-      if (
-        element.x < this.character.x + this.character.w &&
-        element.x + element.w > this.character.x &&
-        element.y < this.character.y + this.character.h &&
-        element.h + element.y > this.character.y
-      ) {
-        this.gameOver()
-      }
+  hasCollision = element => {
+    return (
+      element.x < this.character.x + this.character.w &&
+      element.x + element.w > this.character.x &&
+      element.y < this.character.y + this.character.h &&
+      element.h + element.y > this.character.y
+    );
+  };
+
+  checkItemCollision = () => {
+    this.itemArray.forEach(element => {
+      if (this.hasCollision(element)) console.log("skull");
+    });
+  };
+
+  checkWallCollision = () => {
+    this.wallArray.forEach(element => {
+      if (this.hasCollision(element)) this.gameOver();
     });
   };
 
@@ -116,8 +124,8 @@ class Game {
       item.moveItem();
     });
 
-    this.checkCollision(this.wallArray);
-    this.checkCollision(this.itemArray);
+    this.checkWallCollision(this.wallArray);
+    this.checkItemCollision(this.itemArray);
 
     // drawing
     this.character.drawCharacter();
