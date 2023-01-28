@@ -9,7 +9,7 @@ class Game {
 
     this.wallArray = [];
     this.wallGenerationFactor = 60;
-    this.wallGapFactor = 350;
+    this.wallGapFactor = 200;
     this.wallGapVariance = 1.5;
     this.wallSpeed = 4;
 
@@ -25,10 +25,10 @@ class Game {
   randomizeWallGap = () => {
     const isLeftStarting = Math.round(Math.random());
     const randomVariance =
-      Math.round(Math.random() * 100) * this.wallGapVariance;
+      Math.round(Math.random() * 100 + 1) * this.wallGapVariance;
 
     if (isLeftStarting) {
-      return -this.wallGapFactor + randomVariance;
+      return - this.wallGapFactor - randomVariance;
     } else {
       return this.wallGapFactor + randomVariance;
     }
