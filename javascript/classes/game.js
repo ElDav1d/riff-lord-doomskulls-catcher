@@ -3,6 +3,8 @@ class Game {
     this.frames = 1;
     this.isGameOn = true;
     this.score = 0;
+    this.gameSpeed = 1;
+    this.gameSpeedMin = 0.5;
 
     this.character = new Character(
       initXPosition,
@@ -23,7 +25,7 @@ class Game {
 
     this.leafArray = [];
     this.leafSpeed = 3;
-    this.leafGenerationFactor = 180;
+    this.leafGenerationFactor = 120;
   }
 
   randomizeWallGap = () => {
@@ -39,10 +41,11 @@ class Game {
   };
 
   createWall = () => {
-    const isFramesPerSec = this.frames % this.wallGenerationFactor === 0;
+    const isFramesPerSec =
+      this.frames % (this.wallGenerationFactor * this.gameSpeed) === 0;
 
     if (this.wallArray.length === 0 || isFramesPerSec) {
-      const wall = new Wall(0, 0, this.wallSpeed);
+      const wall = new Wall(0, 0, this.wallSpeed * this.gameSpeed);
 
       wall.x = this.randomizeWallGap();
 
@@ -66,7 +69,7 @@ class Game {
     const isFramesPerSec = this.frames % this.skullGenerationFactor === 0;
 
     if (this.skullArray.length === 0 || isFramesPerSec) {
-      const skull = new Skull(0, 0, this.skullSpeed);
+      const skull = new Skull(0, 0, this.skullSpeed * this.gameSpeed);
 
       skull.x = this.randomizeXPosition(skull.w);
 
@@ -75,10 +78,10 @@ class Game {
   };
 
   createLeaf = () => {
-    const isFramesPerSec = this.frames % this.skullGenerationFactor === 0;
+    const isFramesPerSec = this.frames % this.leafGenerationFactor === 0;
 
     if (this.leafArray.length === 0 || isFramesPerSec) {
-      const leaf = new Leaf(0, 0, this.leafSpeed);
+      const leaf = new Leaf(0, 0, this.leafSpeed * this.gameSpeed);
 
       leaf.x = this.randomizeXPosition(leaf.w);
 
@@ -105,7 +108,7 @@ class Game {
     this.skullArray.forEach((skull, index) => {
       if (this.hasCollision(skull)) {
         this.skullArray.splice(index, 1);
-        this.score += 1;
+        this.score += skull.points;
       }
     });
   };
@@ -114,7 +117,11 @@ class Game {
     this.leafArray.forEach((leaf, index) => {
       if (this.hasCollision(leaf)) {
         this.leafArray.splice(index, 1);
-        console.log("HITS LEAF");
+
+        if (this.gameSpeed >= this.gameSpeedMin) {
+          console.log(this.gameSpeed);
+          this.gameSpeed = leaf.slowGame(this.gameSpeed);
+        }
       }
     });
   };

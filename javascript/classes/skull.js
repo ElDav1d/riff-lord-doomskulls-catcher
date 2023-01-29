@@ -3,6 +3,7 @@ class Skull extends FallingItem {
     super(x, y, speed);
     this.w = 30;
     this.h = 30;
+    this.points = 1;
   }
 
   drawSkull = () => {
