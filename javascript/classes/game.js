@@ -3,10 +3,12 @@ class Game {
     this.frames = 1;
     this.isGameOn = true;
     this.score = 0;
-    this.gameSpeed = 1;
-    this.gameSpeedMin = 0.5;
+    this.gameSpeedState = 1;
+    this.gameNewSpeed = 1;
+    this.gameSpeedMin = 0.25;
     this.gameSpeedMax = 1.5;
     this.gameBackground = new Background();
+    this.gameGeneratorVariance = 2;
 
     this.character = new Character(
       initXPosition,
@@ -16,10 +18,11 @@ class Game {
     );
 
     this.wallArray = [];
-    this.wallGenerationFactor = 60;
+    this.wallGenerationFactor = 90;
+    this.wallGeneration;
     this.wallGapFactor = 200;
     this.wallGapVariance = 1.5;
-    this.wallSpeed = 4;
+    this.wallSpeed = 3;
 
     this.skullArray = [];
     this.skullSpeed = 5;
@@ -27,7 +30,7 @@ class Game {
 
     this.leafArray = [];
     this.leafSpeed = 3;
-    this.leafGenerationFactor = 150;
+    this.leafGenerationFactor = 180;
 
     this.pillArray = [];
     this.pillSpeed = 6;
@@ -46,19 +49,6 @@ class Game {
     }
   };
 
-  createWall = () => {
-    const isFramesPerSec =
-      this.frames % (this.wallGenerationFactor * this.gameSpeed) === 0;
-
-    if (this.wallArray.length === 0 || isFramesPerSec) {
-      const wall = new Wall(0, 0, this.wallSpeed * this.gameSpeed);
-
-      wall.x = this.randomizeWallGap();
-
-      this.wallArray.push(wall);
-    }
-  };
-
   randomizeXPosition = itemWidth => {
     const randomXPosition = Math.floor(Math.random() * canvas.width);
 
@@ -71,11 +61,52 @@ class Game {
     return randomXPosition;
   };
 
+  updateStackSpeed = stack => {
+    if (stack.length > 1) {
+      const lastItem = stack[stack.length - 1];
+      const prevItem = stack[stack.length - 2];
+
+      if (lastItem.speed !== prevItem.speed) {
+        stack.forEach(item => {
+          item.speed = lastItem.speed;
+        });
+      }
+    }
+  };
+
+  createWall = () => {
+    if (this.gameNewSpeed < this.gameSpeedState) {
+      this.wallGenerationFactor += this.gameGeneratorVariance;
+      this.wallSpeed -= this.gameSpeedState - this.gameNewSpeed;
+
+      this.gameSpeedState = this.gameNewSpeed;
+    }
+
+    const isFramesPerSec = this.frames % this.wallGenerationFactor === 0;
+
+    if (this.wallArray.length === 0 || isFramesPerSec) {
+      const wall = new Wall(0, 0, this.wallSpeed);
+
+      wall.x = this.randomizeWallGap();
+
+      this.wallArray.push(wall);
+    }
+
+    this.updateStackSpeed(this.wallArray);
+  };
+
   createSkull = () => {
+    if (this.gameNewSpeed < this.gameSpeedState) {
+      this.skullGenerationFactor += this.gameGeneratorVariance;
+      this.skullSpeed -= this.gameSpeedState - this.gameNewSpeed;
+
+      this.gameSpeedState = this.gameNewSpeed;
+    }
+
     const isFramesPerSec = this.frames % this.skullGenerationFactor === 0;
 
     if (this.skullArray.length === 0 || isFramesPerSec) {
-      const skull = new Skull(0, 0, this.skullSpeed + this.gameSpeed);
+      const skull = new Skull(0, 0, this.skullSpeed * this.gameSpeedState);
 
       skull.x = this.randomizeXPosition(skull.w);
 
@@ -84,10 +115,17 @@ class Game {
   };
 
   createLeaf = () => {
+    if (this.gameNewSpeed < this.gameSpeedState) {
+      this.leafGenerationFactor += this.gameGeneratorVariance;
+      this.leafSpeed -= this.gameSpeedState - this.gameNewSpeed;
+
+      this.gameSpeedState = this.gameNewSpeed;
+    }
+
     const isFramesPerSec = this.frames % this.leafGenerationFactor === 0;
 
     if (this.leafArray.length === 0 || isFramesPerSec) {
-      const leaf = new Leaf(0, 0, this.leafSpeed + this.gameSpeed);
+      const leaf = new Leaf(0, 0, this.leafSpeed * this.gameSpeedState);
 
       leaf.x = this.randomizeXPosition(leaf.w);
 
@@ -96,10 +134,17 @@ class Game {
   };
 
   createPill = () => {
+    if (this.gameNewSpeed < this.gameSpeedState) {
+      this.pillGenerationFactor += this.gameGeneratorVariance;
+      this.pillSpeed -= this.gameSpeedState - this.gameNewSpeed;
+
+      this.gameSpeedState = this.gameNewSpeed;
+    }
+
     const isFramesPerSec = this.frames % this.pillGenerationFactor === 0;
 
     if (this.pillArray.length === 0 || isFramesPerSec) {
-      const pill = new Pill(0, 0, this.pillSpeed * this.gameSpeed);
+      const pill = new Pill(0, 0, this.pillSpeed * this.gameSpeedState);
 
       pill.x = this.randomizeXPosition(pill.w);
 
@@ -136,8 +181,8 @@ class Game {
       if (this.hasCollision(leaf)) {
         this.leafArray.splice(index, 1);
 
-        if (this.gameSpeed > this.gameSpeedMin) {
-          // this.gameSpeed = leaf.slowDownGame(this.gameSpeed);
+        if (this.gameSpeedState > this.gameSpeedMin) {
+          this.gameNewSpeed -= leaf.bonus;
         }
       }
     });
@@ -148,8 +193,8 @@ class Game {
       if (this.hasCollision(pill)) {
         this.pillArray.splice(index, 1);
 
-        if (this.gameSpeed < this.gameSpeedMax) {
-          // this.gameSpeed = pill.speedUpGame(this.gameSpeed);
+        if (this.gameSpeedState < this.gameSpeedMax) {
+          // this.gameNewSpeed += pill.malus;
         }
       }
     });
@@ -231,9 +276,13 @@ class Game {
     this.createSkull();
     this.createLeaf();
     this.createPill();
+    this.updateStackSpeed(this.wallArray);
     this.cleanStack(this.wallArray);
+    this.updateStackSpeed(this.skullArray);
     this.cleanStack(this.skullArray);
+    this.updateStackSpeed(this.leafArray);
     this.cleanStack(this.leafArray);
+    this.updateStackSpeed(this.pillArray);
     this.cleanStack(this.pillArray);
 
     // recursion

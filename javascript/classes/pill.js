@@ -3,7 +3,7 @@ class Pill extends FallingItem {
     super(x, y, speed);
     this.w = 25;
     this.h = 25;
-    this.malus = 0.05;
+    this.malus = 0.005;
     this.image = new Image();
     this.image.src = "./assets/images/pill.png";
   }
@@ -12,5 +12,5 @@ class Pill extends FallingItem {
     context.drawImage(this.image, this.x, this.y, this.w, this.h);
   };
 
-  speedUpGame = gameSpeed => (gameSpeed += this.malus);
+  // speedUpGame = gameSpeed => gameSpeed + this.malus;
 }

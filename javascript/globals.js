@@ -13,6 +13,6 @@ const restartBtnDOM = document.querySelector("#restart-btn");
 const context = canvas.getContext("2d");
 
 const characterW = 55;
-const characterH = 55;
+const characterH = 66;
 const initXPosition = canvas.width / 2 - characterW / 2;
 const yPosition = canvas.height - characterH * 2;
