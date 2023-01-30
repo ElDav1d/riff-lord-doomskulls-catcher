@@ -77,7 +77,14 @@ class Game {
   createWall = () => {
     if (this.gameNewSpeed < this.gameSpeedState) {
       this.wallGenerationFactor += this.gameGeneratorVariance;
+
       this.wallSpeed -= this.gameSpeedState - this.gameNewSpeed;
+
+      this.gameSpeedState = this.gameNewSpeed;
+    } else if (this.gameNewSpeed > this.gameSpeedState) {
+      this.wallGenerationFactor -= this.gameGeneratorVariance;
+
+      this.wallSpeed += this.gameNewSpeed - this.gameSpeedState;
 
       this.gameSpeedState = this.gameNewSpeed;
     }
@@ -98,7 +105,14 @@ class Game {
   createSkull = () => {
     if (this.gameNewSpeed < this.gameSpeedState) {
       this.skullGenerationFactor += this.gameGeneratorVariance;
+
       this.skullSpeed -= this.gameSpeedState - this.gameNewSpeed;
+
+      this.gameSpeedState = this.gameNewSpeed;
+    } else if (this.gameNewSpeed > this.gameSpeedState) {
+      this.skullGenerationFactor -= this.gameGeneratorVariance;
+
+      this.skullSpeed += this.gameNewSpeed - this.gameSpeedState;
 
       this.gameSpeedState = this.gameNewSpeed;
     }
@@ -112,12 +126,21 @@ class Game {
 
       this.skullArray.push(skull);
     }
+
+    this.updateStackSpeed(this.skullArray);
   };
 
   createLeaf = () => {
     if (this.gameNewSpeed < this.gameSpeedState) {
       this.leafGenerationFactor += this.gameGeneratorVariance;
+
       this.leafSpeed -= this.gameSpeedState - this.gameNewSpeed;
+
+      this.gameSpeedState = this.gameNewSpeed;
+    } else if (this.gameNewSpeed > this.gameSpeedState) {
+      this.leafGenerationFactor -= this.gameGeneratorVariance;
+
+      this.leafSpeed += this.gameNewSpeed - this.gameSpeedState;
 
       this.gameSpeedState = this.gameNewSpeed;
     }
@@ -131,12 +154,21 @@ class Game {
 
       this.leafArray.push(leaf);
     }
+
+    this.updateStackSpeed(this.leafArray);
   };
 
   createPill = () => {
     if (this.gameNewSpeed < this.gameSpeedState) {
       this.pillGenerationFactor += this.gameGeneratorVariance;
+
       this.pillSpeed -= this.gameSpeedState - this.gameNewSpeed;
+
+      this.gameSpeedState = this.gameNewSpeed;
+    } else if (this.gameNewSpeed > this.gameSpeedState) {
+      this.pillGenerationFactor -= this.gameGeneratorVariance;
+
+      this.pillSpeed += this.gameNewSpeed - this.gameSpeedState;
 
       this.gameSpeedState = this.gameNewSpeed;
     }
@@ -150,6 +182,8 @@ class Game {
 
       this.pillArray.push(pill);
     }
+
+    this.updateStackSpeed(this.pillArray);
   };
 
   cleanStack = stack => {
@@ -194,7 +228,7 @@ class Game {
         this.pillArray.splice(index, 1);
 
         if (this.gameSpeedState < this.gameSpeedMax) {
-          // this.gameNewSpeed += pill.malus;
+          this.gameNewSpeed += pill.malus;
         }
       }
     });
@@ -276,13 +310,10 @@ class Game {
     this.createSkull();
     this.createLeaf();
     this.createPill();
-    this.updateStackSpeed(this.wallArray);
+
     this.cleanStack(this.wallArray);
-    this.updateStackSpeed(this.skullArray);
     this.cleanStack(this.skullArray);
-    this.updateStackSpeed(this.leafArray);
     this.cleanStack(this.leafArray);
-    this.updateStackSpeed(this.pillArray);
     this.cleanStack(this.pillArray);
 
     // recursion
