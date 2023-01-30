@@ -1,13 +1,14 @@
 class Skull extends FallingItem {
   constructor(x, y, speed) {
     super(x, y, speed);
-    this.w = 30;
-    this.h = 30;
+    this.w = 40;
+    this.h = 65;
     this.points = 1;
+    this.image = new Image();
+    this.image.src = "./assets/images/skull.png";
   }
 
   drawSkull = () => {
-    context.fillStyle = "red";
-    context.fillRect(this.x, this.y, this.w, this.h);
+    context.drawImage(this.image, this.x, this.y, this.w, this.h);
   };
 }

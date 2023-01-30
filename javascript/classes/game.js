@@ -5,6 +5,8 @@ class Game {
     this.score = 0;
     this.gameSpeed = 1;
     this.gameSpeedMin = 0.5;
+    this.gameSpeedMax = 1.5;
+    this.gameBackground = new Background();
 
     this.character = new Character(
       initXPosition,
@@ -25,7 +27,11 @@ class Game {
 
     this.leafArray = [];
     this.leafSpeed = 3;
-    this.leafGenerationFactor = 120;
+    this.leafGenerationFactor = 150;
+
+    this.pillArray = [];
+    this.pillSpeed = 6;
+    this.pillGenerationFactor = 45;
   }
 
   randomizeWallGap = () => {
@@ -69,7 +75,7 @@ class Game {
     const isFramesPerSec = this.frames % this.skullGenerationFactor === 0;
 
     if (this.skullArray.length === 0 || isFramesPerSec) {
-      const skull = new Skull(0, 0, this.skullSpeed * this.gameSpeed);
+      const skull = new Skull(0, 0, this.skullSpeed + this.gameSpeed);
 
       skull.x = this.randomizeXPosition(skull.w);
 
@@ -81,11 +87,23 @@ class Game {
     const isFramesPerSec = this.frames % this.leafGenerationFactor === 0;
 
     if (this.leafArray.length === 0 || isFramesPerSec) {
-      const leaf = new Leaf(0, 0, this.leafSpeed * this.gameSpeed);
+      const leaf = new Leaf(0, 0, this.leafSpeed + this.gameSpeed);
 
       leaf.x = this.randomizeXPosition(leaf.w);
 
       this.leafArray.push(leaf);
+    }
+  };
+
+  createPill = () => {
+    const isFramesPerSec = this.frames % this.pillGenerationFactor === 0;
+
+    if (this.pillArray.length === 0 || isFramesPerSec) {
+      const pill = new Pill(0, 0, this.pillSpeed * this.gameSpeed);
+
+      pill.x = this.randomizeXPosition(pill.w);
+
+      this.pillArray.push(pill);
     }
   };
 
@@ -118,9 +136,20 @@ class Game {
       if (this.hasCollision(leaf)) {
         this.leafArray.splice(index, 1);
 
-        if (this.gameSpeed >= this.gameSpeedMin) {
-          console.log(this.gameSpeed);
-          this.gameSpeed = leaf.slowGame(this.gameSpeed);
+        if (this.gameSpeed > this.gameSpeedMin) {
+          // this.gameSpeed = leaf.slowDownGame(this.gameSpeed);
+        }
+      }
+    });
+  };
+
+  handlePillCollision = () => {
+    this.pillArray.forEach((pill, index) => {
+      if (this.hasCollision(pill)) {
+        this.pillArray.splice(index, 1);
+
+        if (this.gameSpeed < this.gameSpeedMax) {
+          // this.gameSpeed = pill.speedUpGame(this.gameSpeed);
         }
       }
     });
@@ -128,7 +157,7 @@ class Game {
 
   handleWallCollision = () => {
     this.wallArray.forEach(element => {
-      if (this.hasCollision(element)) this.gameOver();
+      // if (this.hasCollision(element)) this.gameOver();
     });
   };
 
@@ -168,12 +197,17 @@ class Game {
       leaf.moveItem();
     });
 
+    this.pillArray.forEach(pill => {
+      pill.moveItem();
+    });
+
     this.handleWallCollision();
     this.handleSkullCollision();
     this.handleLeafCollision();
+    this.handlePillCollision();
 
     // drawing
-
+    this.gameBackground.drawBackground();
     this.character.drawCharacter();
 
     this.wallArray.forEach(wall => {
@@ -188,13 +222,19 @@ class Game {
       leaf.drawLeaf();
     });
 
+    this.pillArray.forEach(pill => {
+      pill.drawPill();
+    });
+
     //spawning
     this.createWall();
     this.createSkull();
     this.createLeaf();
+    this.createPill();
     this.cleanStack(this.wallArray);
     this.cleanStack(this.skullArray);
     this.cleanStack(this.leafArray);
+    this.cleanStack(this.pillArray);
 
     // recursion
     if (this.isGameOn) {

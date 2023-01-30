@@ -3,12 +3,13 @@ class Leaf extends FallingItem {
     super(x, y, speed);
     this.w = 40;
     this.h = 40;
-    this.bonus = 0.25;
+    this.bonus = 0.05;
+    this.image = new Image();
+    this.image.src = "./assets/images/leaf.png";
   }
 
   drawLeaf = () => {
-    context.fillStyle = "green";
-    context.fillRect(this.x, this.y, this.w, this.h);
+    context.drawImage(this.image, this.x, this.y, this.w, this.h);
   };
 
   slowDownGame = gameSpeed => (gameSpeed -= this.bonus);

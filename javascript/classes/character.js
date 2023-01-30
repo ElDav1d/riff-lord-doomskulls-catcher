@@ -5,11 +5,12 @@ class Character {
     this.w = characterW;
     this.h = characterH;
     this.speed = 50;
+    this.image = new Image();
+    this.image.src = "./assets/images/tony.png";
   }
 
   drawCharacter = () => {
-    context.fillStyle = "white";
-    context.fillRect(this.x, this.y, this.w, this.h);
+    context.drawImage(this.image, this.x, this.y, this.w, this.h);
   };
 
   moveLeft = () => {
