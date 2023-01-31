@@ -10,6 +10,11 @@ const gameScoreDOM = document.querySelector("#game-score");
 const startBtnDOM = document.querySelector("#start-btn");
 const restartBtnDOM = document.querySelector("#restart-btn");
 
+const soundSkullDOM = document.querySelector("#audio-skull");
+const soundWallDOM = document.querySelector("#audio-wall");
+const soundLeafDOM = document.querySelector("#audio-leaf");
+const soundPillDOM = document.querySelector("#audio-pill");
+
 const context = canvas.getContext("2d");
 
 const characterW = 55;

@@ -9,6 +9,12 @@ class Game {
     this.gameSpeedMax = 1.5;
     this.gameBackground = new Background();
     this.gameGeneratorVariance = 2;
+    this.gameSoundFX = [
+      soundSkullDOM,
+      soundWallDOM,
+      soundLeafDOM,
+      soundPillDOM,
+    ];
 
     this.character = new Character(
       initXPosition,
@@ -192,6 +198,13 @@ class Game {
     }
   };
 
+  cleanSoundFX = () => {
+    this.gameSoundFX.forEach(sound => {
+      sound.pause();
+      sound.currentTime = 0;
+    });
+  };
+
   hasCollision = (element, isLoose = false) => {
     if (isLoose) {
       return (
@@ -215,6 +228,9 @@ class Game {
       if (this.hasCollision(skull)) {
         this.skullArray.splice(index, 1);
         this.score += skull.points;
+
+        this.cleanSoundFX();
+        soundSkullDOM.play();
       }
     });
   };
@@ -227,6 +243,9 @@ class Game {
         if (this.gameSpeedState > this.gameSpeedMin) {
           this.gameNewSpeed -= leaf.bonus;
         }
+
+        this.cleanSoundFX();
+        soundLeafDOM.play();
       }
     });
   };
@@ -239,13 +258,21 @@ class Game {
         if (this.gameSpeedState < this.gameSpeedMax) {
           this.gameNewSpeed += pill.malus;
         }
+
+        this.cleanSoundFX();
+        soundPillDOM.play();
       }
     });
   };
 
   handleWallCollision = () => {
     this.wallArray.forEach(element => {
-      if (this.hasCollision(element, true)) this.gameOver();
+      if (this.hasCollision(element, true)) {
+        this.cleanSoundFX();
+        soundWallDOM.play();
+
+        this.gameOver();
+      }
     });
   };
 
