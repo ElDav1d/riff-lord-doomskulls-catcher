@@ -12,13 +12,14 @@
 body {
   background-color: black;
   margin: 0;
+  font-family: "7016-fontps", Helvetica, Arial, sans-serif;
 }
 
 button {
   border: none;
   background-color: var(--color-primary);
   color: white;
-  font-family: "7016-fontps", Helvetica, Arial, sans-serif;
+  font-family: inherit;
   font-size: 1.25rem;
   padding: 0.75rem 3rem;
   margin-bottom: 8.5rem;
@@ -35,6 +36,7 @@ button {
 
 #game-score {
   color: white;
+  font-family: inherit;
   font-size: 2rem;
   text-align: right;
   position: absolute;
