@@ -192,10 +192,21 @@ class Game {
     }
   };
 
-  hasCollision = element => {
-    return (
+  hasCollision = (element, isLoose = false) => {
+    const isXCollision =
       element.x < this.character.x + this.character.w &&
-      element.x + element.w > this.character.x &&
+      element.x + element.w > this.character.x;
+
+    if (isLoose) {
+      return (
+        isXCollision &&
+        element.y < this.character.y + this.character.h * 0.3 &&
+        element.h + element.y > this.character.y + this.character.h * 0.7
+      );
+    }
+
+    return (
+      isXCollision &&
       element.y < this.character.y + this.character.h &&
       element.h + element.y > this.character.y
     );
@@ -236,7 +247,7 @@ class Game {
 
   handleWallCollision = () => {
     this.wallArray.forEach(element => {
-      // if (this.hasCollision(element)) this.gameOver();
+      if (this.hasCollision(element, true)) this.gameOver();
     });
   };
 
@@ -287,11 +298,12 @@ class Game {
 
     // drawing
     this.gameBackground.drawBackground();
-    this.character.drawCharacter();
 
     this.wallArray.forEach(wall => {
       wall.drawWall();
     });
+
+    this.character.drawCharacter();
 
     this.skullArray.forEach(skull => {
       skull.drawSkull();
