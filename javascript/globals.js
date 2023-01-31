@@ -14,6 +14,7 @@ const soundSkullDOM = document.querySelector("#audio-skull");
 const soundWallDOM = document.querySelector("#audio-wall");
 const soundLeafDOM = document.querySelector("#audio-leaf");
 const soundPillDOM = document.querySelector("#audio-pill");
+const soundGameDOM = document.querySelector("#audio-game");
 
 const context = canvas.getContext("2d");
 

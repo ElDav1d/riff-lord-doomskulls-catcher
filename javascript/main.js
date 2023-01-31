@@ -5,6 +5,9 @@ const startGame = () => {
   splashScreenDOM.style.display = "none";
   gameoverScreenDOM.style.display = "none";
   gameScreenDOM.style.display = "block";
+
+  soundGameDOM.loop = true;
+  soundGameDOM.play();
 };
 
 const restartGame = () => {
