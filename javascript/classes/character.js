@@ -14,14 +14,18 @@ class Character {
   };
 
   moveLeft = () => {
-    if (this.x > 0) {
+    if (this.x > this.speed) {
       this.x -= this.speed;
+    } else {
+      this.x = 0;
     }
   };
 
   moveRigth = () => {
-    if (this.x + this.w < canvas.width) {
+    if (this.x + this.w < canvas.width - this.speed) {
       this.x += this.speed;
+    } else {
+      this.x = canvas.width - this.w;
     }
   };
 }
