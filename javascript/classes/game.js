@@ -193,23 +193,21 @@ class Game {
   };
 
   hasCollision = (element, isLoose = false) => {
-    const isXCollision =
-      element.x < this.character.x + this.character.w &&
-      element.x + element.w > this.character.x;
-
     if (isLoose) {
       return (
-        isXCollision &&
+        element.x < this.character.x + this.character.w * 0.65 &&
+        element.x + element.w > this.character.x + this.character.w * 0.35 &&
         element.y < this.character.y + this.character.h * 0.3 &&
         element.h + element.y > this.character.y + this.character.h * 0.7
       );
+    } else {
+      return (
+        element.x < this.character.x + this.character.w &&
+        element.x + element.w > this.character.x &&
+        element.y < this.character.y + this.character.h &&
+        element.h + element.y > this.character.y
+      );
     }
-
-    return (
-      isXCollision &&
-      element.y < this.character.y + this.character.h &&
-      element.h + element.y > this.character.y
-    );
   };
 
   handleSkullCollision = () => {
