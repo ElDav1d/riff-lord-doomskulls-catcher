@@ -5,10 +5,6 @@ const initScreens = () => {
 };
 
 const initGameSounds = () => {
-  game.gameSoundFX.forEach(effect => {
-    effect.volume = fXVolume;
-  });
-
   soundGameDOM.loop = true;
   soundGameDOM.volume = backgroundVolume;
   soundGameDOM.play();

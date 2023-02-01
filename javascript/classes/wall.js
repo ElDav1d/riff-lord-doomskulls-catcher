@@ -5,6 +5,7 @@ class Wall extends FallingItem {
     this.h = 33;
     this.image = new Image();
     this.image.src = "./assets/images/wall.gif";
+    this.sound = soundWallDOM;
   }
 
   drawWall = () => {
