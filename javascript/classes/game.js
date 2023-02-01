@@ -40,11 +40,11 @@ class Game {
 
     this.leafArray = [];
     this.leafSpeed = 3;
-    this.leafGenerationFactor = 180;
+    this.leafGenerationFactor = 300;
 
     this.pillArray = [];
-    this.pillSpeed = 6;
-    this.pillGenerationFactor = 45;
+    this.pillSpeed = 7;
+    this.pillGenerationFactor = 30;
   }
 
   moveCharacter = () => {
