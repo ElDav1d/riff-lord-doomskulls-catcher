@@ -301,6 +301,10 @@ class Game {
       gameScreenDOM.style.display = "none";
 
       gameoverScreenDOM.style.display = "flex";
+
+      soundGameDOM.pause();
+      soundGameDOM.loop = false;
+      soundGameDOM.currentTime = 0;
     }, 1000);
   };
 

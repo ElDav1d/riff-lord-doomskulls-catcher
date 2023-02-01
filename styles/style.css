@@ -25,6 +25,10 @@ button {
   margin-bottom: 8.5rem;
 }
 
+button:hover {
+  cursor: pointer;
+}
+
 #game-canvas {
   outline: 2px solid var(--color-primary);
 }

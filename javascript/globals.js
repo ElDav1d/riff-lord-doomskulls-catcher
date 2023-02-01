@@ -15,7 +15,7 @@ const soundWallDOM = document.querySelector("#audio-wall");
 const soundLeafDOM = document.querySelector("#audio-leaf");
 const soundPillDOM = document.querySelector("#audio-pill");
 const soundGameDOM = document.querySelector("#audio-game");
-// const soundSplashDOM = document.querySelector("#audio-splash");
+const soundSplashDOM = document.querySelector("#audio-splash");
 
 const context = canvas.getContext("2d");
 
@@ -26,3 +26,7 @@ const yPosition = canvas.height - characterH * 2;
 
 const backgroundVolume = 0.045;
 const fXVolume = 0.05;
+
+const playCursor = 'url("../assets/icons/play-icon.png"), auto';
+const pauseCursor = 'url("../assets/icons/pause-icon.png"), auto';
+let hasSplashSound = false;
