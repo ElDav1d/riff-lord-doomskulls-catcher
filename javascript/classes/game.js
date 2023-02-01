@@ -22,6 +22,10 @@ class Game {
       characterW,
       characterH
     );
+    this.characterMoves = {
+      left: false,
+      right: false,
+    };
 
     this.wallArray = [];
     this.wallGenerationFactor = 90;
@@ -42,6 +46,16 @@ class Game {
     this.pillSpeed = 6;
     this.pillGenerationFactor = 45;
   }
+
+  moveCharacter = () => {
+    if (this.characterMoves.right) {
+      this.character.moveRigth();
+    }
+
+    if (this.characterMoves.left) {
+      this.character.moveLeft();
+    }
+  };
 
   randomizeWallGap = () => {
     const isLeftStarting = Math.round(Math.random());
@@ -299,6 +313,8 @@ class Game {
 
     // animation and actions
     this.displayScore();
+
+    this.moveCharacter();
 
     this.wallArray.forEach(wall => {
       wall.moveItem();

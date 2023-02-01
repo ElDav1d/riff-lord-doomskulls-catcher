@@ -4,7 +4,7 @@ class Character {
     this.y = positionY;
     this.w = characterW;
     this.h = characterH;
-    this.speed = 30;
+    this.speed = 10;
     this.image = new Image();
     this.image.src = "./assets/images/tony.png";
   }
