@@ -8,7 +8,12 @@ const startGame = () => {
 
   // soundSplashDOM.pause();
   // soundSplashDOM.currentTime = 0;
+  game.gameSoundFX.forEach(effect => {
+    effect.volume = fXVolume;
+  });
+
   soundGameDOM.loop = true;
+  soundGameDOM.volume = backgroundVolume;
   soundGameDOM.play();
 };
 

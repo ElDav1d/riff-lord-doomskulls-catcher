@@ -15,6 +15,7 @@ const soundWallDOM = document.querySelector("#audio-wall");
 const soundLeafDOM = document.querySelector("#audio-leaf");
 const soundPillDOM = document.querySelector("#audio-pill");
 const soundGameDOM = document.querySelector("#audio-game");
+// const soundSplashDOM = document.querySelector("#audio-splash");
 
 const context = canvas.getContext("2d");
 
@@ -22,3 +23,6 @@ const characterW = 55;
 const characterH = 66;
 const initXPosition = canvas.width / 2 - characterW / 2;
 const yPosition = canvas.height - characterH * 2;
+
+const backgroundVolume = 0.045;
+const fXVolume = 0.05;
