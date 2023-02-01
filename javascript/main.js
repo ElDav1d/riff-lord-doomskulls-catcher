@@ -25,10 +25,11 @@ const restartGame = () => {
 const handleMoveKey = event => {
   const move = event.code.toLowerCase().slice(5);
 
-  if (event.type === "keyup") {
+  if (game && event.type === "keyup") {
     game.characterMoves[move] = false;
   }
-  if (event.type === "keydown") {
+
+  if (game && event.type === "keydown") {
     game.characterMoves[move] = true;
   }
 };
