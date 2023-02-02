@@ -10,6 +10,8 @@ class Game {
     this.gameBackground = new Background();
     this.gameGeneratorVariance = 2;
     this.gameSoundFX = [];
+    this.gameLives = 3;
+    this.gameInmunity = 0;
 
     this.character = new Character(
       INIT_X_POSITION,
@@ -301,7 +303,23 @@ class Game {
         wall.cleanSoundFx(this.gameSoundFX);
         wall.manageSound();
 
-        this.gameOver();
+        if (!this.gameInmunity) {
+          if (this.gameLives > 0) {
+            this.gameLives--;
+            this.gameInmunity = 5;
+            console.log("lives", this.gameLives);
+
+            const inmunityInterval = setInterval(() => {
+              this.gameInmunity--;
+              console.log(this.gameInmunity);
+              if (!this.gameInmunity) {
+                clearInterval(inmunityInterval);
+              }
+            }, 1000);
+          } else {
+            this.gameOver();
+          }
+        }
       }
     });
   };
@@ -325,6 +343,7 @@ class Game {
   gameLoop = () => {
     // control
     this.frames++;
+    console.log("loop", this.gameInmunity);
 
     // clear
     context.clearRect(0, 0, canvas.width, canvas.height);
