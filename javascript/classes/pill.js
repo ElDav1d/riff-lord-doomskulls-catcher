@@ -8,8 +8,4 @@ class Pill extends FallingItem {
     this.image.src = "./assets/images/pill.png";
     this.sound = soundPillDOM;
   }
-
-  drawPill = () => {
-    context.drawImage(this.image, this.x, this.y, this.w, this.h);
-  };
 }

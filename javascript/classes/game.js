@@ -10,12 +10,6 @@ class Game {
     this.gameBackground = new Background();
     this.gameGeneratorVariance = 2;
     this.gameSoundFX = [];
-    this.gameStacks = {
-      walls: [],
-      skulls: [],
-      pills: [],
-      leaves: [],
-    };
 
     this.character = new Character(
       initXPosition,
@@ -29,23 +23,36 @@ class Game {
     };
 
     this.wallArray = [];
-    this.wallGenerationFactor = 90;
+    this.wallGenerationFactor = 60;
     this.wallGeneration;
     this.wallGapFactor = 200;
     this.wallGapVariance = 1.5;
     this.wallSpeed = 3;
 
-    this.skullArray = [];
-    this.skullSpeed = 5;
-    this.skullGenerationFactor = 60;
+    this.skullTypes = ["skullHigh", "skullMid", "skullLow"];
+
+    this.skullHighSpeed = 9;
+    this.skullHighGenerationFactor = 60 * 10;
+
+    this.skullMidSpeed = 7;
+    this.skullMidGenerationFactor = 60 * 2.5;
+
+    this.skullLowSpeed = 5;
+    this.skullLowGenerationFactor = 60 * 0.75;
+
+    this.skullStack = {
+      skullHighArray: [],
+      skullMidArray: [],
+      skullLowArray: [],
+    };
 
     this.leafArray = [];
     this.leafSpeed = 3;
-    this.leafGenerationFactor = 300;
+    this.leafGenerationFactor = 60 * 5;
 
     this.pillArray = [];
     this.pillSpeed = 7;
-    this.pillGenerationFactor = 30;
+    this.pillGenerationFactor = 60 * 0.5;
   }
 
   moveCharacter = () => {
@@ -117,10 +124,7 @@ class Game {
   createWall = () => {
     this.manageItemSpeed("wallSpeed", "wallGenerationFactor");
 
-    if (
-      this.wallArray.length === 0 ||
-      this.isFramesPerSec("wallGenerationFactor")
-    ) {
+    if (this.isFramesPerSec("wallGenerationFactor")) {
       const wall = new Wall(0, 0, this.wallSpeed * this.gameSpeedState);
 
       wall.x = this.randomizeWallGap();
@@ -131,30 +135,47 @@ class Game {
     this.updateStackSpeed(this.wallArray);
   };
 
-  createSkull = () => {
-    this.manageItemSpeed("skullSpeed", "skullGenerationFactor");
+  createSkull = skullType => {
+    this.manageItemSpeed(`${skullType}Speed`, `${skullType}GenerationFactor`);
+    if (this.isFramesPerSec([`${skullType}GenerationFactor`])) {
+      let skull;
 
-    if (
-      this.skullArray.length === 0 ||
-      this.isFramesPerSec("skullGenerationFactor")
-    ) {
-      const skull = new Skull(0, 0, this.skullSpeed * this.gameSpeedState);
+      switch (skullType) {
+        case "skullHigh":
+          skull = new SkullHigh(
+            0,
+            0,
+            this[`${skullType}Speed`] * this.gameSpeedState
+          );
+          break;
+        case "skullMid":
+          skull = new SkullMid(
+            0,
+            0,
+            this[`${skullType}Speed`] * this.gameSpeedState
+          );
+          break;
+        default:
+          skull = new SkullLow(
+            0,
+            0,
+            this[`${skullType}Speed`] * this.gameSpeedState
+          );
+          break;
+      }
 
       skull.x = this.randomizeXPosition(skull.w);
 
-      this.skullArray.push(skull);
+      this.skullStack[`${skullType}Array`].push(skull);
     }
 
-    this.updateStackSpeed(this.skullArray);
+    this.updateStackSpeed(this.skullStack[`${skullType}Array`]);
   };
 
   createLeaf = () => {
     this.manageItemSpeed("leafSpeed", "leafGenerationFactor");
 
-    if (
-      this.leafArray.length === 0 ||
-      this.isFramesPerSec("leafGenerationFactor")
-    ) {
+    if (this.isFramesPerSec("leafGenerationFactor")) {
       const leaf = new Leaf(0, 0, this.leafSpeed * this.gameSpeedState);
 
       leaf.x = this.randomizeXPosition(leaf.w);
@@ -168,10 +189,7 @@ class Game {
   createPill = () => {
     this.manageItemSpeed("pillSpeed", "pillGenerationFactor");
 
-    if (
-      this.pillArray.length === 0 ||
-      this.isFramesPerSec("pillGenerationFactor")
-    ) {
+    if (this.isFramesPerSec("pillGenerationFactor")) {
       const pill = new Pill(0, 0, this.pillSpeed * this.gameSpeedState);
 
       pill.x = this.randomizeXPosition(pill.w);
@@ -183,16 +201,9 @@ class Game {
   };
 
   cleanStack = stack => {
-    if (stack[0].y + stack[0].h > canvas.height) {
+    if (stack.length && stack[0].y + stack[0].h > canvas.height) {
       stack.shift();
     }
-  };
-
-  cleanSoundFX = () => {
-    this.gameSoundFX.forEach(sound => {
-      sound.pause();
-      sound.currentTime = 0;
-    });
   };
 
   hasCollision = (element, isLoose = false) => {
@@ -213,18 +224,48 @@ class Game {
     }
   };
 
-  handleSkullCollision = () => {
-    this.skullArray.forEach((skull, index) => {
-      if (this.hasCollision(skull)) {
-        this.skullArray.splice(index, 1);
-        this.score += skull.points;
+  handleSkullCollisions = () => {
+    Object.keys(this.skullStack).forEach(key => {
+      this.skullStack[key].forEach((skull, index) => {
+        if (this.hasCollision(skull)) {
+          this.skullStack[key].splice(index, 1);
 
-        skull.manageSound(this.gameSoundFX);
-      }
+          this.score += skull.points;
+
+          if (key.includes("skullHigh")) {
+            skull.cleanSoundFx(this.gameSoundFX);
+          }
+
+          skull.stackSound(this.gameSoundFX);
+          skull.manageSound();
+        }
+      });
     });
   };
 
-  handleLeafCollision = () => {
+  moveSkulls = () => {
+    Object.keys(this.skullStack).forEach(key => {
+      this.skullStack[key].forEach(skull => {
+        skull.moveItem();
+      });
+    });
+  };
+
+  drawSkulls = () => {
+    Object.keys(this.skullStack).forEach(key => {
+      this.skullStack[key].forEach(skull => {
+        skull.drawItem();
+      });
+    });
+  };
+
+  cleanSkullStack = () => {
+    Object.keys(this.skullStack).forEach(key => {
+      this.cleanStack(this.skullStack[key]);
+    });
+  };
+
+  handleLeafCollisions = () => {
     this.leafArray.forEach((leaf, index) => {
       if (this.hasCollision(leaf)) {
         this.leafArray.splice(index, 1);
@@ -233,7 +274,8 @@ class Game {
           this.gameNewSpeed -= leaf.bonus;
         }
 
-        leaf.manageSound(this.gameSoundFX);
+        leaf.stackSound(this.gameSoundFX);
+        leaf.manageSound();
       }
     });
   };
@@ -247,15 +289,17 @@ class Game {
           this.gameNewSpeed += pill.malus;
         }
 
-        pill.manageSound(this.gameSoundFX);
+        pill.stackSound(this.gameSoundFX);
+        pill.manageSound();
       }
     });
   };
 
-  handleWallCollision = () => {
+  handleWallCollisions = () => {
     this.wallArray.forEach(wall => {
       if (this.hasCollision(wall, true)) {
-        wall.manageSound(this.gameSoundFX);
+        wall.cleanSoundFx(this.gameSoundFX);
+        wall.manageSound();
 
         this.gameOver();
       }
@@ -274,9 +318,7 @@ class Game {
 
       gameoverScreenDOM.style.display = "flex";
 
-      soundGameDOM.pause();
       soundGameDOM.loop = false;
-      soundGameDOM.currentTime = 0;
     }, 1000);
   };
 
@@ -296,9 +338,7 @@ class Game {
       wall.moveItem();
     });
 
-    this.skullArray.forEach(skull => {
-      skull.moveItem();
-    });
+    this.moveSkulls();
 
     this.leafArray.forEach(leaf => {
       leaf.moveItem();
@@ -308,40 +348,42 @@ class Game {
       pill.moveItem();
     });
 
-    this.handleWallCollision();
-    this.handleSkullCollision();
-    this.handleLeafCollision();
+    this.handleWallCollisions();
+    this.handleSkullCollisions();
+    this.handleLeafCollisions();
     this.handlePillCollision();
 
     // drawing
     this.gameBackground.drawBackground();
 
     this.wallArray.forEach(wall => {
-      wall.drawWall();
+      wall.drawItem();
     });
 
     this.character.drawCharacter();
 
-    this.skullArray.forEach(skull => {
-      skull.drawSkull();
-    });
+    this.drawSkulls();
 
     this.leafArray.forEach(leaf => {
-      leaf.drawLeaf();
+      leaf.drawItem();
     });
 
     this.pillArray.forEach(pill => {
-      pill.drawPill();
+      pill.drawItem();
     });
 
     //spawning
     this.createWall();
-    this.createSkull();
+
+    this.skullTypes.forEach(type => {
+      this.createSkull(type);
+    });
+
     this.createLeaf();
     this.createPill();
 
+    this.cleanSkullStack();
     this.cleanStack(this.wallArray);
-    this.cleanStack(this.skullArray);
     this.cleanStack(this.leafArray);
     this.cleanStack(this.pillArray);
 

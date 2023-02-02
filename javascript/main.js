@@ -5,6 +5,7 @@ const initScreens = () => {
 };
 
 const initGameSounds = () => {
+  soundGameDOM.currentTime = 0;
   soundGameDOM.loop = true;
   soundGameDOM.volume = backgroundVolume;
   soundGameDOM.play();
