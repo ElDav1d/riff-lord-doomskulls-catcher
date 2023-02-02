@@ -39,13 +39,11 @@ button:hover {
 }
 
 #game-score {
-  color: white;
-  font-family: inherit;
-  font-size: 2rem;
-  text-align: right;
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
+  font-size: 2.5rem;
+}
+
+#game-lives {
+  font-size: 1.5rem;
 }
 
 #splash-screen {
@@ -69,6 +67,15 @@ button:hover {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.container-stats {
+  color: white;
+  font-family: inherit;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  text-align: right;
 }
 
 .screen {

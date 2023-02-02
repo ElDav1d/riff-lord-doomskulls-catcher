@@ -2,7 +2,7 @@ class Game {
   constructor() {
     this.frames = 1;
     this.isGameOn = true;
-    this.score = 0;
+    this.gameScore = 0;
     this.gameSpeedState = 1;
     this.gameNewSpeed = 1;
     this.gameSpeedMin = 0.25;
@@ -12,7 +12,6 @@ class Game {
     this.gameSoundFX = [];
     this.gameLives = 3;
 
-    // this.character = new Character(INIT_X_POSITION, Y_POSITION, false);
     this.character = new Character(INIT_X_POSITION, Y_POSITION);
     this.characterMoves = {
       left: false,
@@ -228,7 +227,7 @@ class Game {
         if (this.hasCollision(skull)) {
           this.skullStack[key].splice(index, 1);
 
-          this.score += skull.points;
+          this.gameScore += skull.points;
 
           if (key.includes("skullHigh")) {
             skull.cleanSoundFx(this.gameSoundFX);
@@ -318,7 +317,11 @@ class Game {
   };
 
   displayScore = () => {
-    gameScoreDOM.innerText = this.score;
+    gameScoreDOM.innerText = this.gameScore;
+  };
+
+  displayLives = () => {
+    gameLivesDOM.innerText = this.gameLives - 1;
   };
 
   getCharacterPic = () => {
@@ -350,6 +353,8 @@ class Game {
 
     // animation and actions
     this.displayScore();
+
+    this.displayLives();
 
     this.moveCharacter();
 

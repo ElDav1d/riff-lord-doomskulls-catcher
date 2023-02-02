@@ -8,6 +8,7 @@ const splashScreenDOM = document.querySelector("#splash-screen");
 const gameoverScreenDOM = document.querySelector("#gameover-screen");
 
 const gameScoreDOM = document.querySelector("#game-score");
+const gameLivesDOM = document.querySelector("#game-lives");
 const startBtnDOM = document.querySelector("#start-btn");
 const restartBtnDOM = document.querySelector("#restart-btn");
 
