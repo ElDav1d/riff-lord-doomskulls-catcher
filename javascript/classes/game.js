@@ -11,18 +11,14 @@ class Game {
     this.gameGeneratorVariance = 2;
     this.gameSoundFX = [];
     this.gameLives = 3;
-    this.gameInmunity = 0;
 
-    this.character = new Character(
-      INIT_X_POSITION,
-      Y_POSITION,
-      CHARACTER_WIDTH,
-      CHARACTER_HEIGHT
-    );
+    // this.character = new Character(INIT_X_POSITION, Y_POSITION, false);
+    this.character = new Character(INIT_X_POSITION, Y_POSITION);
     this.characterMoves = {
       left: false,
       right: false,
     };
+    this.characterInmunity = 0;
 
     this.wallArray = [];
     this.wallGenerationFactor = 60;
@@ -209,14 +205,14 @@ class Game {
   };
 
   hasCollision = (element, isLoose = false) => {
-    if (isLoose) {
+    if (isLoose && !this.characterInmunity) {
       return (
         element.x < this.character.x + this.character.w * 0.65 &&
         element.x + element.w > this.character.x + this.character.w * 0.35 &&
         element.y < this.character.y + this.character.h * 0.3 &&
         element.h + element.y > this.character.y + this.character.h * 0.7
       );
-    } else {
+    } else if (!this.characterInmunity) {
       return (
         element.x < this.character.x + this.character.w &&
         element.x + element.w > this.character.x &&
@@ -303,22 +299,19 @@ class Game {
         wall.cleanSoundFx(this.gameSoundFX);
         wall.manageSound();
 
-        if (!this.gameInmunity) {
-          if (this.gameLives > 0) {
-            this.gameLives--;
-            this.gameInmunity = 5;
-            console.log("lives", this.gameLives);
+        if (this.gameLives > 1) {
+          this.gameLives--;
+          this.characterInmunity = CHARACTER_INMUNITY_LAPSE;
 
-            const inmunityInterval = setInterval(() => {
-              this.gameInmunity--;
-              console.log(this.gameInmunity);
-              if (!this.gameInmunity) {
-                clearInterval(inmunityInterval);
-              }
-            }, 1000);
-          } else {
-            this.gameOver();
-          }
+          const inmunityInterval = setInterval(() => {
+            this.characterInmunity--;
+
+            if (!this.characterInmunity) {
+              clearInterval(inmunityInterval);
+            }
+          }, 1000);
+        } else {
+          this.gameOver();
         }
       }
     });
@@ -326,6 +319,14 @@ class Game {
 
   displayScore = () => {
     gameScoreDOM.innerText = this.score;
+  };
+
+  getCharacterPic = () => {
+    if (!this.characterInmunity) {
+      this.character.image.src = CHARACTER_IMAGE_PATH;
+    } else {
+      this.character.image.src = CHARACTER_INMUNE_IMAGE_PATH;
+    }
   };
 
   gameOver = () => {
@@ -343,7 +344,6 @@ class Game {
   gameLoop = () => {
     // control
     this.frames++;
-    console.log("loop", this.gameInmunity);
 
     // clear
     context.clearRect(0, 0, canvas.width, canvas.height);
@@ -352,6 +352,8 @@ class Game {
     this.displayScore();
 
     this.moveCharacter();
+
+    this.getCharacterPic();
 
     this.wallArray.forEach(wall => {
       wall.moveItem();

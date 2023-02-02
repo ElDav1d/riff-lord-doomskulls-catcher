@@ -24,6 +24,7 @@ const context = canvas.getContext("2d");
 
 const CHARACTER_WIDTH = 55;
 const CHARACTER_HEIGHT = 66;
+const CHARACTER_INMUNITY_LAPSE = 3;
 const INIT_X_POSITION = canvas.width / 2 - CHARACTER_WIDTH / 2;
 const Y_POSITION = canvas.height - CHARACTER_HEIGHT * 2;
 
@@ -31,6 +32,8 @@ const BACKGROUND_VOLUME = 0.045;
 const FX_VOLUME = 0.05;
 const SKULL_HIGH_VOLUME = 0.075;
 
+const CHARACTER_IMAGE_PATH = "./assets/images/tony.png";
+const CHARACTER_INMUNE_IMAGE_PATH = "./assets/images/tony-inmune.png";
 const ICON_PLAY_PATH = "./assets/icons/play-icon.png";
 const ICON_PAUSE_PATH = "./assets/icons/pause-icon.png";
 const SKULL_HIGH_PATH = "./assets/images/skullHigh.png";
