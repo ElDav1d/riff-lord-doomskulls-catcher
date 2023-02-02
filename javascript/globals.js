@@ -9,6 +9,7 @@ const gameoverScreenDOM = document.querySelector("#gameover-screen");
 
 const gameScoreDOM = document.querySelector("#game-score");
 const gameLivesDOM = document.querySelector("#game-lives");
+const gameMessageDOM = document.querySelector("#game-message");
 const startBtnDOM = document.querySelector("#start-btn");
 const restartBtnDOM = document.querySelector("#restart-btn");
 
@@ -40,6 +41,9 @@ const ICON_PAUSE_PATH = "./assets/icons/pause-icon.png";
 const SKULL_HIGH_PATH = "./assets/images/skullHigh.png";
 const SKULL_MID_PATH = "./assets/images/skullMid.png";
 const SKULL_LOW_PATH = "./assets/images/skullLow.png";
+
+const COLLISION_LITERAL_1 = "Ouch!";
+const COLLISION_LITERAL_2 = "Eaaasy, man!";
 
 const CURSOR_PLAY = `url(${ICON_PLAY_PATH}), auto`;
 const CURSOR_PAUSE = `url(${ICON_PAUSE_PATH}), auto`;

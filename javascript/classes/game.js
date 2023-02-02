@@ -324,6 +324,20 @@ class Game {
     gameLivesDOM.innerText = this.gameLives - 1;
   };
 
+  displayMessage = () => {
+    if (this.characterInmunity) {
+      gameMessageDOM.style.display = "block";
+
+      if (this.gameLives > 1) {
+        gameMessageDOM.innerText = COLLISION_LITERAL_1;
+      } else {
+        gameMessageDOM.innerText = COLLISION_LITERAL_2;
+      }
+    } else {
+      gameMessageDOM.style.display = "none";
+    }
+  };
+
   getCharacterPic = () => {
     if (!this.characterInmunity) {
       this.character.image.src = CHARACTER_IMAGE_PATH;
@@ -341,7 +355,7 @@ class Game {
       gameoverScreenDOM.style.display = "flex";
 
       soundGameDOM.loop = false;
-    }, 1000);
+    }, 500);
   };
 
   gameLoop = () => {
@@ -355,6 +369,8 @@ class Game {
     this.displayScore();
 
     this.displayLives();
+
+    this.displayMessage();
 
     this.moveCharacter();
 
