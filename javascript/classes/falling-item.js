@@ -3,8 +3,14 @@ class FallingItem {
     this.x = positionX;
     this.y = positionY;
     this.speed = itemSpeed;
+    this.image = new Image();
+    this.image.src = "";
     this.sound = {};
   }
+
+  drawItem = () => {
+    context.drawImage(this.image, this.x, this.y, this.w, this.h);
+  };
 
   moveItem = () => {
     this.y += this.speed;
@@ -17,14 +23,14 @@ class FallingItem {
     });
   };
 
-  manageSound = array => {
-    this.cleanSoundFx(array);
-
-    this.sound.volume = fxVolume;
-    this.sound.play();
-
+  stackSound = array => {
     if (!array.includes(this.sound)) {
       array.push(this.sound);
     }
+  };
+
+  manageSound = () => {
+    this.sound.volume = FX_VOLUME;
+    this.sound.play();
   };
 }

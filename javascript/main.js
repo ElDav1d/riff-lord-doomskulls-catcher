@@ -5,8 +5,9 @@ const initScreens = () => {
 };
 
 const initGameSounds = () => {
+  soundGameDOM.currentTime = 0;
   soundGameDOM.loop = true;
-  soundGameDOM.volume = backgroundVolume;
+  soundGameDOM.volume = BACKGROUND_VOLUME;
   soundGameDOM.play();
 };
 
@@ -16,14 +17,14 @@ const stopSplashSound = () => {
 };
 
 const initSplashSound = () => {
-  splashScreenDOM.style.cursor = pauseCursor;
-  soundSplashDOM.volume = backgroundVolume;
+  splashScreenDOM.style.cursor = CURSOR_PAUSE;
+  soundSplashDOM.volume = BACKGROUND_VOLUME;
   soundSplashDOM.loop = true;
   soundSplashDOM.play();
 };
 
 const pauseSplashSound = () => {
-  splashScreenDOM.style.cursor = playCursor;
+  splashScreenDOM.style.cursor = CURSOR_PLAY;
   soundSplashDOM.pause();
 };
 
@@ -55,7 +56,7 @@ const handleMoveKey = event => {
 
 const handleSplashMouseover = event => {
   if (event.target === splashScreenDOM && !splashScreenDOM.style.cursor) {
-    splashScreenDOM.style.cursor = playCursor;
+    splashScreenDOM.style.cursor = CURSOR_PLAY;
   }
 };
 

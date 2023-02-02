@@ -8,8 +8,4 @@ class Leaf extends FallingItem {
     this.image.src = "./assets/images/leaf.png";
     this.sound = soundLeafDOM;
   }
-
-  drawLeaf = () => {
-    context.drawImage(this.image, this.x, this.y, this.w, this.h);
-  };
 }
