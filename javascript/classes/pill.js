@@ -6,6 +6,7 @@ class Pill extends FallingItem {
     this.malus = 0.25;
     this.image = new Image();
     this.image.src = "./assets/images/pill.png";
+    this.sound = soundPillDOM;
   }
 
   drawPill = () => {

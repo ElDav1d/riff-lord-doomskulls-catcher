@@ -25,8 +25,8 @@ const initXPosition = canvas.width / 2 - characterW / 2;
 const yPosition = canvas.height - characterH * 2;
 
 const backgroundVolume = 0.045;
-const fXVolume = 0.05;
+const fxVolume = 0.05;
 
-const playCursor = 'url("../assets/icons/play-icon.png"), auto';
-const pauseCursor = 'url("../assets/icons/pause-icon.png"), auto';
+const playCursor = 'url("./assets/icons/play-icon.png"), auto';
+const pauseCursor = 'url("./assets/icons/pause-icon.png"), auto';
 let hasSplashSound = false;

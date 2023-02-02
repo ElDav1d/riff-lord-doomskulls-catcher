@@ -9,12 +9,13 @@ class Game {
     this.gameSpeedMax = 1.5;
     this.gameBackground = new Background();
     this.gameGeneratorVariance = 2;
-    this.gameSoundFX = [
-      soundSkullDOM,
-      soundWallDOM,
-      soundLeafDOM,
-      soundPillDOM,
-    ];
+    this.gameSoundFX = [];
+    this.gameStacks = {
+      walls: [],
+      skulls: [],
+      pills: [],
+      leaves: [],
+    };
 
     this.character = new Character(
       initXPosition,
@@ -94,25 +95,33 @@ class Game {
     }
   };
 
-  createWall = () => {
+  manageItemSpeed = (itemSpeedKey, itemGenerationFactorKey) => {
     if (this.gameNewSpeed < this.gameSpeedState) {
-      this.wallGenerationFactor += this.gameGeneratorVariance;
+      this[itemGenerationFactorKey] += this.gameGeneratorVariance;
 
-      this.wallSpeed -= this.gameSpeedState - this.gameNewSpeed;
+      this[itemSpeedKey] -= this.gameSpeedState - this.gameNewSpeed;
 
       this.gameSpeedState = this.gameNewSpeed;
     } else if (this.gameNewSpeed > this.gameSpeedState) {
-      this.wallGenerationFactor -= this.gameGeneratorVariance;
+      this[itemGenerationFactorKey] -= this.gameGeneratorVariance;
 
-      this.wallSpeed += this.gameNewSpeed - this.gameSpeedState;
+      this[itemSpeedKey] += this.gameNewSpeed - this.gameSpeedState;
 
       this.gameSpeedState = this.gameNewSpeed;
     }
+  };
 
-    const isFramesPerSec = this.frames % this.wallGenerationFactor === 0;
+  isFramesPerSec = itemGenerationFactorKey =>
+    this.frames % this[itemGenerationFactorKey] === 0;
 
-    if (this.wallArray.length === 0 || isFramesPerSec) {
-      const wall = new Wall(0, 0, this.wallSpeed);
+  createWall = () => {
+    this.manageItemSpeed("wallSpeed", "wallGenerationFactor");
+
+    if (
+      this.wallArray.length === 0 ||
+      this.isFramesPerSec("wallGenerationFactor")
+    ) {
+      const wall = new Wall(0, 0, this.wallSpeed * this.gameSpeedState);
 
       wall.x = this.randomizeWallGap();
 
@@ -123,23 +132,12 @@ class Game {
   };
 
   createSkull = () => {
-    if (this.gameNewSpeed < this.gameSpeedState) {
-      this.skullGenerationFactor += this.gameGeneratorVariance;
+    this.manageItemSpeed("skullSpeed", "skullGenerationFactor");
 
-      this.skullSpeed -= this.gameSpeedState - this.gameNewSpeed;
-
-      this.gameSpeedState = this.gameNewSpeed;
-    } else if (this.gameNewSpeed > this.gameSpeedState) {
-      this.skullGenerationFactor -= this.gameGeneratorVariance;
-
-      this.skullSpeed += this.gameNewSpeed - this.gameSpeedState;
-
-      this.gameSpeedState = this.gameNewSpeed;
-    }
-
-    const isFramesPerSec = this.frames % this.skullGenerationFactor === 0;
-
-    if (this.skullArray.length === 0 || isFramesPerSec) {
+    if (
+      this.skullArray.length === 0 ||
+      this.isFramesPerSec("skullGenerationFactor")
+    ) {
       const skull = new Skull(0, 0, this.skullSpeed * this.gameSpeedState);
 
       skull.x = this.randomizeXPosition(skull.w);
@@ -151,23 +149,12 @@ class Game {
   };
 
   createLeaf = () => {
-    if (this.gameNewSpeed < this.gameSpeedState) {
-      this.leafGenerationFactor += this.gameGeneratorVariance;
+    this.manageItemSpeed("leafSpeed", "leafGenerationFactor");
 
-      this.leafSpeed -= this.gameSpeedState - this.gameNewSpeed;
-
-      this.gameSpeedState = this.gameNewSpeed;
-    } else if (this.gameNewSpeed > this.gameSpeedState) {
-      this.leafGenerationFactor -= this.gameGeneratorVariance;
-
-      this.leafSpeed += this.gameNewSpeed - this.gameSpeedState;
-
-      this.gameSpeedState = this.gameNewSpeed;
-    }
-
-    const isFramesPerSec = this.frames % this.leafGenerationFactor === 0;
-
-    if (this.leafArray.length === 0 || isFramesPerSec) {
+    if (
+      this.leafArray.length === 0 ||
+      this.isFramesPerSec("leafGenerationFactor")
+    ) {
       const leaf = new Leaf(0, 0, this.leafSpeed * this.gameSpeedState);
 
       leaf.x = this.randomizeXPosition(leaf.w);
@@ -179,23 +166,12 @@ class Game {
   };
 
   createPill = () => {
-    if (this.gameNewSpeed < this.gameSpeedState) {
-      this.pillGenerationFactor += this.gameGeneratorVariance;
+    this.manageItemSpeed("pillSpeed", "pillGenerationFactor");
 
-      this.pillSpeed -= this.gameSpeedState - this.gameNewSpeed;
-
-      this.gameSpeedState = this.gameNewSpeed;
-    } else if (this.gameNewSpeed > this.gameSpeedState) {
-      this.pillGenerationFactor -= this.gameGeneratorVariance;
-
-      this.pillSpeed += this.gameNewSpeed - this.gameSpeedState;
-
-      this.gameSpeedState = this.gameNewSpeed;
-    }
-
-    const isFramesPerSec = this.frames % this.pillGenerationFactor === 0;
-
-    if (this.pillArray.length === 0 || isFramesPerSec) {
+    if (
+      this.pillArray.length === 0 ||
+      this.isFramesPerSec("pillGenerationFactor")
+    ) {
       const pill = new Pill(0, 0, this.pillSpeed * this.gameSpeedState);
 
       pill.x = this.randomizeXPosition(pill.w);
@@ -243,8 +219,7 @@ class Game {
         this.skullArray.splice(index, 1);
         this.score += skull.points;
 
-        this.cleanSoundFX();
-        soundSkullDOM.play();
+        skull.manageSound(this.gameSoundFX);
       }
     });
   };
@@ -258,8 +233,7 @@ class Game {
           this.gameNewSpeed -= leaf.bonus;
         }
 
-        this.cleanSoundFX();
-        soundLeafDOM.play();
+        leaf.manageSound(this.gameSoundFX);
       }
     });
   };
@@ -273,17 +247,15 @@ class Game {
           this.gameNewSpeed += pill.malus;
         }
 
-        this.cleanSoundFX();
-        soundPillDOM.play();
+        pill.manageSound(this.gameSoundFX);
       }
     });
   };
 
   handleWallCollision = () => {
-    this.wallArray.forEach(element => {
-      if (this.hasCollision(element, true)) {
-        this.cleanSoundFX();
-        soundWallDOM.play();
+    this.wallArray.forEach(wall => {
+      if (this.hasCollision(wall, true)) {
+        wall.manageSound(this.gameSoundFX);
 
         this.gameOver();
       }

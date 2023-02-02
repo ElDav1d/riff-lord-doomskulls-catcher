@@ -6,6 +6,7 @@ class Skull extends FallingItem {
     this.points = 1;
     this.image = new Image();
     this.image.src = "./assets/images/skull.png";
+    this.sound = soundSkullDOM;
   }
 
   drawSkull = () => {
