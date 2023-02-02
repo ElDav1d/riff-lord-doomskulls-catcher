@@ -40,6 +40,7 @@ button:hover {
 
 #game-score {
   font-size: 2.5rem;
+  text-align: right;
 }
 
 #game-lives {
@@ -63,19 +64,28 @@ button:hover {
   justify-content: center;
 }
 
-.container-flex {
+.container-flex-column {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.container-stats {
+.container-flex-end {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+
+.stats {
   color: white;
   font-family: inherit;
   position: absolute;
   top: 1rem;
   right: 1rem;
-  text-align: right;
+}
+
+.icon-lives {
+  margin-right: 0.5rem;
 }
 
 .screen {
