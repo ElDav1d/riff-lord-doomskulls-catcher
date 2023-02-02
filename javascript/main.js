@@ -1,7 +1,7 @@
 const initScreens = () => {
   splashScreenDOM.style.display = "none";
   gameoverScreenDOM.style.display = "none";
-  gameScreenDOM.style.display = "block";
+  gameScreenDOM.style.display = "flex";
 };
 
 const initGameSounds = () => {

@@ -2,7 +2,7 @@ class Game {
   constructor() {
     this.frames = 1;
     this.isGameOn = true;
-    this.score = 0;
+    this.gameScore = 0;
     this.gameSpeedState = 1;
     this.gameNewSpeed = 1;
     this.gameSpeedMin = 0.25;
@@ -10,17 +10,14 @@ class Game {
     this.gameBackground = new Background();
     this.gameGeneratorVariance = 2;
     this.gameSoundFX = [];
+    this.gameLives = 3;
 
-    this.character = new Character(
-      INIT_X_POSITION,
-      Y_POSITION,
-      CHARACTER_WIDTH,
-      CHARACTER_HEIGHT
-    );
+    this.character = new Character(INIT_X_POSITION, Y_POSITION);
     this.characterMoves = {
       left: false,
       right: false,
     };
+    this.characterInmunity = 0;
 
     this.wallArray = [];
     this.wallGenerationFactor = 60;
@@ -207,14 +204,14 @@ class Game {
   };
 
   hasCollision = (element, isLoose = false) => {
-    if (isLoose) {
+    if (isLoose && !this.characterInmunity) {
       return (
         element.x < this.character.x + this.character.w * 0.65 &&
         element.x + element.w > this.character.x + this.character.w * 0.35 &&
         element.y < this.character.y + this.character.h * 0.3 &&
         element.h + element.y > this.character.y + this.character.h * 0.7
       );
-    } else {
+    } else if (!this.characterInmunity) {
       return (
         element.x < this.character.x + this.character.w &&
         element.x + element.w > this.character.x &&
@@ -230,7 +227,7 @@ class Game {
         if (this.hasCollision(skull)) {
           this.skullStack[key].splice(index, 1);
 
-          this.score += skull.points;
+          this.gameScore += skull.points;
 
           if (key.includes("skullHigh")) {
             skull.cleanSoundFx(this.gameSoundFX);
@@ -301,13 +298,52 @@ class Game {
         wall.cleanSoundFx(this.gameSoundFX);
         wall.manageSound();
 
-        this.gameOver();
+        if (this.gameLives > 1) {
+          this.gameLives--;
+          this.characterInmunity = CHARACTER_INMUNITY_LAPSE;
+
+          const inmunityInterval = setInterval(() => {
+            this.characterInmunity--;
+
+            if (!this.characterInmunity) {
+              clearInterval(inmunityInterval);
+            }
+          }, 1000);
+        } else {
+          this.gameOver();
+        }
       }
     });
   };
 
   displayScore = () => {
-    gameScoreDOM.innerText = this.score;
+    gameScoreDOM.innerText = this.gameScore;
+  };
+
+  displayLives = () => {
+    gameLivesDOM.innerText = this.gameLives - 1;
+  };
+
+  displayMessage = () => {
+    if (this.characterInmunity) {
+      gameMessageDOM.style.display = "block";
+
+      if (this.gameLives > 1) {
+        gameMessageDOM.innerText = COLLISION_LITERAL_1;
+      } else {
+        gameMessageDOM.innerText = COLLISION_LITERAL_2;
+      }
+    } else {
+      gameMessageDOM.style.display = "none";
+    }
+  };
+
+  getCharacterPic = () => {
+    if (!this.characterInmunity) {
+      this.character.image.src = CHARACTER_IMAGE_PATH;
+    } else {
+      this.character.image.src = CHARACTER_INMUNE_IMAGE_PATH;
+    }
   };
 
   gameOver = () => {
@@ -319,7 +355,7 @@ class Game {
       gameoverScreenDOM.style.display = "flex";
 
       soundGameDOM.loop = false;
-    }, 1000);
+    }, 500);
   };
 
   gameLoop = () => {
@@ -332,7 +368,13 @@ class Game {
     // animation and actions
     this.displayScore();
 
+    this.displayLives();
+
+    this.displayMessage();
+
     this.moveCharacter();
+
+    this.getCharacterPic();
 
     this.wallArray.forEach(wall => {
       wall.moveItem();

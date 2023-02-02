@@ -8,16 +8,23 @@
     <link rel="stylesheet" href="./styles/style.css" />
   </head>
   <body>
-    <div class="background container-flex">
-      <div id="splash-screen" class="container-flex screen">
+    <div class="background container-flex-column">
+      <div id="splash-screen" class="container-flex-column screen">
         <button id="start-btn">START!</button>
       </div>
-      <div id="game-screen">
+      <div class="container-flex-column" id="game-screen">
+        <h1 id="game-message"></h1>
         <canvas id="game-canvas" width="600" height="800"></canvas>
-        <span id="game-score">0</span>
+        <div class="container-flex-column stats">
+          <div id="game-score">0</div>
+          <div class="container-flex-end">
+            <img class="icon-lives" src="./assets/icons/tony-icon.png" />
+            <span id="game-lives">0</span>
+          </div>
+        </div>
       </div>
 
-      <div id="gameover-screen" class="container-flex screen">
+      <div id="gameover-screen" class="container-flex-column screen">
         <button id="restart-btn">Play Again!</button>
       </div>
     </div>

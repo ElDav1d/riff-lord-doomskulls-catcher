@@ -1,12 +1,12 @@
 class Character {
-  constructor(positionX, positionY, CHARACTER_WIDTH, CHARACTER_HEIGHT) {
+  constructor(positionX, positionY, isInmune) {
     this.x = positionX;
     this.y = positionY;
     this.w = CHARACTER_WIDTH;
     this.h = CHARACTER_HEIGHT;
     this.speed = 10;
     this.image = new Image();
-    this.image.src = "./assets/images/tony.png";
+    this.image.src = CHARACTER_IMAGE_PATH;
   }
 
   drawCharacter = () => {

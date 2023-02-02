@@ -38,14 +38,21 @@ button:hover {
   position: relative;
 }
 
-#game-score {
+#game-message {
   color: white;
-  font-family: inherit;
-  font-size: 2rem;
-  text-align: right;
+  display: none;
+  font-size: 5rem;
   position: absolute;
-  top: 1rem;
-  right: 1rem;
+  top: 300px;
+}
+
+#game-score {
+  font-size: 2.5rem;
+  text-align: right;
+}
+
+#game-lives {
+  font-size: 1.5rem;
 }
 
 #splash-screen {
@@ -65,10 +72,28 @@ button:hover {
   justify-content: center;
 }
 
-.container-flex {
+.container-flex-column {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.container-flex-end {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+
+.stats {
+  color: white;
+  font-family: inherit;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}
+
+.icon-lives {
+  margin-right: 0.5rem;
 }
 
 .screen {
