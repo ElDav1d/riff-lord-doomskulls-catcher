@@ -30,7 +30,7 @@ class FallingItem {
   };
 
   manageSound = () => {
-    this.sound.volume = fxVolume;
+    this.sound.volume = FX_VOLUME;
     this.sound.play();
   };
 }

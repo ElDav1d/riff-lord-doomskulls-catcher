@@ -1,9 +1,9 @@
 class Character {
-  constructor(positionX, positionY, characterW, characterH) {
+  constructor(positionX, positionY, CHARACTER_WIDTH, CHARACTER_HEIGHT) {
     this.x = positionX;
     this.y = positionY;
-    this.w = characterW;
-    this.h = characterH;
+    this.w = CHARACTER_WIDTH;
+    this.h = CHARACTER_HEIGHT;
     this.speed = 10;
     this.image = new Image();
     this.image.src = "./assets/images/tony.png";

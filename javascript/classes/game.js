@@ -12,10 +12,10 @@ class Game {
     this.gameSoundFX = [];
 
     this.character = new Character(
-      initXPosition,
-      yPosition,
-      characterW,
-      characterH
+      INIT_X_POSITION,
+      Y_POSITION,
+      CHARACTER_WIDTH,
+      CHARACTER_HEIGHT
     );
     this.characterMoves = {
       left: false,
