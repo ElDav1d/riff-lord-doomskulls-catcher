@@ -5,7 +5,7 @@ class Pill extends FallingItem {
     this.h = 26;
     this.malus = 0.25;
     this.image = new Image();
-    this.image.src = "./assets/images/pill.png";
+    this.image.src = PILL_PATH;
     this.sound = soundPillDOM;
   }
 }

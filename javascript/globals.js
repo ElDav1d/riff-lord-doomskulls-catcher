@@ -41,6 +41,9 @@ const ICON_PAUSE_PATH = "./assets/icons/pause-icon.png";
 const SKULL_HIGH_PATH = "./assets/images/skullHigh.png";
 const SKULL_MID_PATH = "./assets/images/skullMid.png";
 const SKULL_LOW_PATH = "./assets/images/skullLow.png";
+const WALL_PATH = "./assets/images/wall.gif";
+const LEAF_PATH = "./assets/images/leaf.png";
+const PILL_PATH = "./assets/images/pill.png";
 
 const COLLISION_LITERAL_1 = "Ouch!";
 const COLLISION_LITERAL_2 = "Eaaasy, man!";

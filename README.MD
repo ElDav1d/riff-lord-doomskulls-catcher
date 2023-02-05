@@ -247,3 +247,7 @@ Accesible references, variables and fixed data values
 ### Trello
 
 [Link](https://trello.com/b/eaVKVAuT/project1thegame)
+
+### Presentation Slides
+
+[Link](https://docs.google.com/presentation/d/1m10uj-P1nnybVsDgGstTT-cchuHvCd5Lqe0NgLp3Eck/edit?usp=sharing)
