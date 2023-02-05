@@ -5,7 +5,7 @@ class Leaf extends FallingItem {
     this.h = 42;
     this.bonus = 0.25;
     this.image = new Image();
-    this.image.src = "./assets/images/leaf.png";
+    this.image.src = LEAF_PATH;
     this.sound = soundLeafDOM;
   }
 }
